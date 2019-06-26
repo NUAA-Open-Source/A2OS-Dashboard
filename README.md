@@ -16,3 +16,7 @@
 ## 效果预览
 
 ![](./img/preview1.png)
+
+## Notice
+
+本项目使用的数据库配置存放在 `db.conf` 中，可自行根据 `db.example.conf` 的事例进行常见
