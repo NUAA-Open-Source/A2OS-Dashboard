@@ -29,6 +29,28 @@ $().ready(function() {
     $("#quicklook-chart").hide()
 })
 
+function submit() {
+    title = $("#title-input").val()
+    x_title = $("#x-title-input").val()
+    y_title = $("#y-title-input").val()
+    sql = $("#sql-textarea").val()
+    $.ajax({
+        type: "POST",
+        url: "/new",
+        data: {
+            title: title,
+            x_title: x_title,
+            y_title: y_title,
+            sql: sql,
+        },
+        dataType: "json",
+        async: true,
+        success: function(data) {
+            toastr.success("保存成功")
+        }
+    })
+}
+
 var myChart = echarts.init(document.getElementById('quicklook-chart'));
 function quicklook() {
     title = $("#title-input").val()
@@ -37,7 +59,7 @@ function quicklook() {
     sql = $("#sql-textarea").val()
     $.ajax({
         type: "POST",
-        url: "/new",
+        url: "/quicklook",
         data: {
             title: title,
             x_title: x_title,

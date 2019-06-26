@@ -1,12 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
     <div class="content">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Input Select SQL</span>
-            </div>
-            <textarea class="form-control" aria-label="With textarea"></textarea>
-        </div>
         <div class="charts">
             {% for item in result %}
                 <div id="chart-{{item[0]}}" class="chart" style="width: 50%; height: 300px"></div>
@@ -53,6 +47,7 @@ myChart{{item[0]}}.setOption(option);
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
 .chart {
