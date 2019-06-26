@@ -1,0 +1,72 @@
+<!-- 
+Copyright 2019 SafeU Dev Team
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License. 
+-->
+
+{% extends "base.html" %}
+{% block body %}
+    <div class="content">
+        <div class="charts">
+            {% for item in result %}
+                <div id="chart-{{item[0]}}" class="chart" style="width: 50%; height: 300px"></div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock body %}
+
+{% block script %}
+{% for item in result %}
+var myChart{{item[0]}} = echarts.init(document.getElementById('chart-{{item[0]}}'));
+var option = {
+    title: {
+        text: '{{item[1]}}'
+    },
+    tooltip: {},
+    legend: {
+        data:['{{item[3]}}']
+    },
+    xAxis: {
+        data: {{item[4]|safe}}
+    },
+    yAxis: {},
+    series: [{
+        name: '{{item[3]}}',
+        type: 'line',
+        data: {{item[5]}}
+    }]
+};
+myChart{{item[0]}}.setOption(option);
+{% endfor %}
+{% endblock script %}
+
+{% block style %}
+.content {
+    margin-top: 30px;
+    width: 90%;
+    margin-left: 5%;
+}
+
+.charts {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.chart {
+    width: 50%;
+    height: 300px;
+}
+{% endblock style %}
