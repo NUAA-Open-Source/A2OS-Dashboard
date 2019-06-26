@@ -1,34 +1,62 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
-    <title>Document</title>
-</head>
-<body>
-    <div id="main" style="width: 800px;height:600px;"></div>
-</body>
-</html>
-<script>
-var myChart = echarts.init(document.getElementById('main'));
+{% extends "base.html" %}
+{% block body %}
+    <div class="content">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Input Select SQL</span>
+            </div>
+            <textarea class="form-control" aria-label="With textarea"></textarea>
+        </div>
+        <div class="charts">
+            {% for item in result %}
+                <div id="chart-{{item[0]}}" class="chart" style="width: 50%; height: 300px"></div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock body %}
+
+{% block script %}
+{% for item in result %}
+var myChart{{item[0]}} = echarts.init(document.getElementById('chart-{{item[0]}}'));
 var option = {
     title: {
-        text: 'Hello world'
+        text: '{{item[1]}}'
     },
     tooltip: {},
     legend: {
-        data:['销量']
+        data:['{{item[3]}}']
     },
     xAxis: {
-        data: {{x|safe}}
+        data: {{item[4]|safe}}
     },
     yAxis: {},
     series: [{
-        name: '销量',
+        name: '{{item[3]}}',
         type: 'line',
-        data: {{y}}
+        data: {{item[5]}}
     }]
 };
-myChart.setOption(option);
-</script>
+myChart{{item[0]}}.setOption(option);
+{% endfor %}
+{% endblock script %}
+
+{% block style %}
+.content {
+    margin-top: 30px;
+    width: 90%;
+    margin-left: 5%;
+}
+
+.charts {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.chart {
+    width: 50%;
+    height: 300px;
+}
+{% endblock style %}

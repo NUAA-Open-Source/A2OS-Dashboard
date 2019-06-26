@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="form">
+    <div class="form-group">
+        <label for="title-input">图表标题</label>
+        <input type="text" class="form-control" id="title-input" placeholder="图表标题">
+    </div>
+    <div class="form-group">
+        <label for="x-title-input">横轴名称</label>
+        <input type="text" class="form-control" id="x-title-input" placeholder="横轴名称">
+    </div>
+    <div class="form-group">
+        <label for="y-title-input">竖轴名称</label>
+        <input type="text" class="form-control" id="y-title-input" placeholder="竖轴名称">
+    </div>
+    <div class="form-group">
+        <label for="sql-textarea">查询 SQL 语句</label>
+        <textarea class="form-control" id="sql-textarea" rows="3"></textarea>
+    </div>
+    <div id="quicklook-chart" class="chart" style="width: 50%; height: 300px"></div>
+    <button class="btn btn-primary mb-2" onclick="quicklook()">查询预览</button>
+    <button class="btn btn-success mb-2" onclick="submit()">保存</button>
+</div>
+{% endblock body %}
+
+{% block script %}
+$().ready(function() {
+    $("#quicklook-chart").hide()
+})
+
+var myChart = echarts.init(document.getElementById('quicklook-chart'));
+function quicklook() {
+    title = $("#title-input").val()
+    x_title = $("#x-title-input").val()
+    y_title = $("#y-title-input").val()
+    sql = $("#sql-textarea").val()
+    $.ajax({
+        type: "POST",
+        url: "/new",
+        data: {
+            title: title,
+            x_title: x_title,
+            y_title: y_title,
+            sql: sql,
+        },
+        dataType: "json",
+        async: true,
+        success: function(data) {
+            $("#quicklook-chart").show()
+            var option = {
+                title: {
+                    text: data["title"]
+                },
+                tooltip: {},
+                legend: {
+                    data:[data["x_title"]]
+                },
+                xAxis: {
+                    data: data["x_data"]
+                },
+                yAxis: {},
+                series: [{
+                    name: data["x_title"],
+                    type: 'line',
+                    data: data["y_data"]
+                }]
+            };
+            myChart.setOption(option);
+        }
+    })
+}
+{% endblock script %}
+
+{% block style %}
+.form {
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 30px;
+}
+{% endblock style %}
