@@ -36,13 +36,13 @@ var option = {
         data:['{{item[3]}}']
     },
     xAxis: {
-        data: {{item[4]|safe}}
+        data: {{item[5]|safe}}
     },
     yAxis: {},
     series: [{
         name: '{{item[3]}}',
-        type: 'line',
-        data: {{item[5]}}
+        type: '{{item[4]}}',
+        data: {{item[6]|safe}}
     }]
 };
 myChart{{item[0]}}.setOption(option);

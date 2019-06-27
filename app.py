@@ -38,7 +38,7 @@ def home():
             else:
                 x_data.append(row[0])
                 y_data.append(row[1])
-        result.append((record[0], record[2], record[3], record[4], x_data, y_data))
+        result.append((record[0], record[2], record[3], record[4], record[5], x_data, y_data))
     return render_template("home.html", result=result)
 
 @app.route('/new', methods=["POST", "GET"])
@@ -50,8 +50,9 @@ def new():
         x_title = request.form['x_title']
         y_title = request.form['y_title']
         sql = request.form['sql']
-        print("insert into record (title, xtitle, ytitle, query) values ('%s', '%s', '%s', '%s')" % (title, x_title, y_title, pymysql.escape_string(sql)))
-        dashboard_sql_execute("insert into record (title, xtitle, ytitle, query) values ('%s', '%s', '%s', '%s')" % (title, x_title, y_title, pymysql.escape_string(sql))) 
+        chart_type = request.form['chart_type']
+        # print("insert into record (title, xtitle, ytitle, query, chart_type) values ('%s', '%s', '%s', '%s', '%s')" % (title, x_title, y_title, pymysql.escape_string(sql), type_chart))
+        dashboard_sql_execute("insert into record (title, xtitle, ytitle, query, chart_type) values ('%s', '%s', '%s', '%s', '%s')" % (title, x_title, y_title, pymysql.escape_string(sql), chart_type)) 
         
         result = {"status": "success"}
         return json.dumps(result)

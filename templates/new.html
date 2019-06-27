@@ -30,6 +30,13 @@ limitations under the License.
         <input type="text" class="form-control" id="y-title-input" placeholder="竖轴名称">
     </div>
     <div class="form-group">
+        <label for="chart-type-seleect">图表类型</label>
+        <select class="form-control" id="chart-type-select">
+        <option>line</option>
+        <option>bar</option>
+        </select>
+    </div>
+    <div class="form-group">
         <label for="sql-textarea">查询 SQL 语句</label>
         <textarea class="form-control" id="sql-textarea" rows="3"></textarea>
     </div>
@@ -56,6 +63,7 @@ function submit() {
             title: title,
             x_title: x_title,
             y_title: y_title,
+            chart_type: chart_type,
             sql: sql,
         },
         dataType: "json",
@@ -71,6 +79,8 @@ function quicklook() {
     title = $("#title-input").val()
     x_title = $("#x-title-input").val()
     y_title = $("#y-title-input").val()
+    chart_type = $("#chart-type-select").val()
+    console.log(chart_type)
     sql = $("#sql-textarea").val()
     $.ajax({
         type: "POST",
@@ -99,7 +109,7 @@ function quicklook() {
                 yAxis: {},
                 series: [{
                     name: data["x_title"],
-                    type: 'line',
+                    type: chart_type,
                     data: data["y_data"]
                 }]
             };
